@@ -12,6 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Import the two parts of a GraphQL schema
+const { typeDefs, resolvers } = require('./schemas');
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -25,9 +26,7 @@ const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
-  app.use('/graphql', expressMiddleware(server, {
-    context: authMiddleware
-  }));
+  app.use('/graphql', expressMiddleware(server));
 
     // if we're in production, serve client/build as static assets
   if (process.env.NODE_ENV === 'production') {
